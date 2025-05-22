@@ -28,17 +28,22 @@ public:
 
 	virtual void PreAttributeChange(const FGameplayAttribute& Attribute, float& NewValue) override;
 	virtual void PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue) override;
+	virtual void PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data) override;
 	
 	// Current health
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing=OnRep_Health)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing=OnRep_Health, meta=(HideFromModifiers))
 	FGameplayAttributeData Health;
+	ATTRIBUTE_ACCESSORS(UHealthAttribute, Health);
 
 	// Upper limit for health
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, ReplicatedUsing=OnRep_MaxHealth)
 	FGameplayAttributeData MaxHealth;
-	
-	ATTRIBUTE_ACCESSORS(UHealthAttribute, Health);
 	ATTRIBUTE_ACCESSORS(UHealthAttribute, MaxHealth);
+	
+	// Meta attribute, Damage value calculated during GE
+	UPROPERTY(VisibleAnywhere)
+	FGameplayAttributeData Damage;
+	ATTRIBUTE_ACCESSORS(UHealthAttribute, Damage);
 
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldValue);

@@ -2,6 +2,7 @@
 
 
 #include "Attributes/HealthAttribute.h"
+#include "GameplayEffectExtension.h"
 
 #include "Net/UnrealNetwork.h"
 
@@ -32,6 +33,29 @@ void UHealthAttribute::PostAttributeChange(const FGameplayAttribute& Attribute, 
 	{
 		const float CurrentHealth = GetHealth();
 		OnHealthChanged.Broadcast(this, CurrentHealth, CurrentHealth);
+	}
+}
+
+void UHealthAttribute::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	// In Post Gameplay Effect we check if the evaluated attribute is damage attribute
+	// If Yes we Calculate the new health by subtracting damage from current health
+	if (Data.EvaluatedData.Attribute == GetDamageAttribute())
+	{
+		const float DamageValue = GetDamage();
+		const float OldHealth = GetHealth();
+		const float MaxHealthValue = GetMaxHealth();
+		const float NewHealthValue = FMath::Clamp(OldHealth - DamageValue, 0.0f, MaxHealthValue);
+
+		if (OldHealth != NewHealthValue)
+		{
+			SetHealth(NewHealthValue);
+		}
+
+		// Clear the meta attribute
+		SetDamage(0.0f);
 	}
 }
 

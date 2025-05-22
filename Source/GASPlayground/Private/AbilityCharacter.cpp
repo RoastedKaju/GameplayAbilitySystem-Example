@@ -5,6 +5,7 @@
 
 #include "AdvancedAbilitySystemComponent.h"
 #include "Attributes/HealthAttribute.h"
+#include "EnhancedInputComponent.h"
 
 
 // Sets default values
@@ -30,14 +31,21 @@ void AAbilityCharacter::BeginPlay()
 void AAbilityCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
+	
 }
 
 // Called to bind functionality to input
 void AAbilityCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
+
+	UEnhancedInputComponent* EnhancedInputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	if (EnhancedInputComp && AbilitySystemComponent)
+	{
+		const FTopLevelAssetPath EnumName("/Script/GASPlayground.EAbilitySlotsEnum");
+		FGameplayAbilityInputBinds Binds("ConfirmInput", "CancelInput", EnumName);
+		AbilitySystemComponent->BindAbilityActivationToInputComponent(EnhancedInputComp, Binds);
+	}
 }
 
 UAbilitySystemComponent* AAbilityCharacter::GetAbilitySystemComponent() const
