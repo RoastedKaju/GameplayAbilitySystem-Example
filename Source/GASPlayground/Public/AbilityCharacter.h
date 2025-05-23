@@ -7,6 +7,8 @@
 #include "AbilitySystemInterface.h"
 #include "AbilityCharacter.generated.h"
 
+struct FInputActionValue;
+class UInputAction;
 class UAdvancedAbilitySystemComponent;
 class UHealthAttribute;
 
@@ -31,9 +33,23 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void OnPrimaryAbility(const FInputActionValue& Value);
+
+	virtual void SendAbilityLocalInput(const FInputActionValue& Value, int32 InputID);
+	
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Abilities")
 	TObjectPtr<UAdvancedAbilitySystemComponent> AbilitySystemComponent;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
+	TObjectPtr<UInputAction> PrimaryInputAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
+	TObjectPtr<UInputAction> ConfirmInputAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
+	TObjectPtr<UInputAction> CancelInputAction;
 
 protected:
 	UPROPERTY()

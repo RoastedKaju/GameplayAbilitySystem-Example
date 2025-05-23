@@ -8,6 +8,9 @@
 UENUM(BlueprintType)
 enum class EAbilitySlotsEnum : uint8
 {
+	None,
+	Confirm,
+	Cancel,
 	PrimaryAbility,
 	SecondaryAbility,
 	UltimateAbility

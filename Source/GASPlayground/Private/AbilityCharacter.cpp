@@ -5,7 +5,9 @@
 
 #include "AdvancedAbilitySystemComponent.h"
 #include "Attributes/HealthAttribute.h"
+#include "InputAction.h"
 #include "EnhancedInputComponent.h"
+#include "Enums/AbilitySystemInputEnum.h"
 
 
 // Sets default values
@@ -39,12 +41,33 @@ void AAbilityCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	UEnhancedInputComponent* EnhancedInputComp = Cast<UEnhancedInputComponent>(PlayerInputComponent);
-	if (EnhancedInputComp && AbilitySystemComponent)
+	const FTopLevelAssetPath EnumAssetPath("/Script/GASPlayground", "EAbilitySlotsEnum");
+	FGameplayAbilityInputBinds Binds("Confirm", "Cancel", EnumAssetPath);
+	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent, Binds);
+
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
-		const FTopLevelAssetPath EnumName("/Script/GASPlayground.EAbilitySlotsEnum");
-		FGameplayAbilityInputBinds Binds("ConfirmInput", "CancelInput", EnumName);
-		AbilitySystemComponent->BindAbilityActivationToInputComponent(EnhancedInputComp, Binds);
+		// Primary ability
+		EnhancedInputComponent->BindAction(PrimaryInputAction, ETriggerEvent::Triggered, this, &AAbilityCharacter::OnPrimaryAbility);
+	}
+}
+
+void AAbilityCharacter::OnPrimaryAbility(const FInputActionValue& Value)
+{
+	SendAbilityLocalInput(Value, static_cast<int>(EAbilitySlotsEnum::PrimaryAbility));
+}
+
+void AAbilityCharacter::SendAbilityLocalInput(const FInputActionValue& Value, int32 InputID)
+{
+	check(AbilitySystemComponent);
+
+	if (Value.Get<bool>())
+	{
+		AbilitySystemComponent->AbilityLocalInputPressed(InputID);
+	}
+	else
+	{
+		AbilitySystemComponent->AbilityLocalInputReleased(InputID);
 	}
 }
 
