@@ -41,10 +41,6 @@ void AAbilityCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-	const FTopLevelAssetPath EnumAssetPath("/Script/GASPlayground", "EAbilitySlotsEnum");
-	FGameplayAbilityInputBinds Binds("Confirm", "Cancel", EnumAssetPath);
-	AbilitySystemComponent->BindAbilityActivationToInputComponent(PlayerInputComponent, Binds);
-
 	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
 	{
 		// Primary ability
