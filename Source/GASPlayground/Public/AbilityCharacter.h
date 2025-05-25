@@ -35,6 +35,9 @@ protected:
 
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void OnPrimaryAbility(const FInputActionValue& Value);
+	
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void OnSecondaryAbility(const FInputActionValue& Value);
 
 	virtual void SendAbilityLocalInput(const FInputActionValue& Value, int32 InputID);
 	
@@ -46,11 +49,8 @@ public:
 	TObjectPtr<UInputAction> PrimaryInputAction;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
-	TObjectPtr<UInputAction> ConfirmInputAction;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
-	TObjectPtr<UInputAction> CancelInputAction;
-
+	TObjectPtr<UInputAction> SecondaryInputAction;
+	
 protected:
 	UPROPERTY()
 	TObjectPtr<UHealthAttribute> HealthSet;

@@ -45,6 +45,7 @@ void AAbilityCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	{
 		// Primary ability
 		EnhancedInputComponent->BindAction(PrimaryInputAction, ETriggerEvent::Triggered, this, &AAbilityCharacter::OnPrimaryAbility);
+		EnhancedInputComponent->BindAction(SecondaryInputAction, ETriggerEvent::Triggered, this, &AAbilityCharacter::OnSecondaryAbility);
 	}
 }
 
@@ -53,16 +54,23 @@ void AAbilityCharacter::OnPrimaryAbility(const FInputActionValue& Value)
 	SendAbilityLocalInput(Value, static_cast<int>(EAbilitySlotsEnum::PrimaryAbility));
 }
 
+void AAbilityCharacter::OnSecondaryAbility(const FInputActionValue& Value)
+{
+	SendAbilityLocalInput(Value, static_cast<int>(EAbilitySlotsEnum::SecondaryAbility));
+}
+
 void AAbilityCharacter::SendAbilityLocalInput(const FInputActionValue& Value, int32 InputID)
 {
 	check(AbilitySystemComponent);
 
 	if (Value.Get<bool>())
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Ability Local Input Pressed."));
 		AbilitySystemComponent->AbilityLocalInputPressed(InputID);
 	}
 	else
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Ability Local Input Released."));
 		AbilitySystemComponent->AbilityLocalInputReleased(InputID);
 	}
 }
