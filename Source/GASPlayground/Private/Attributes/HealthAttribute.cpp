@@ -52,6 +52,18 @@ void UHealthAttribute::PostGameplayEffectExecute(const FGameplayEffectModCallbac
 		if (OldHealth != NewHealthValue)
 		{
 			SetHealth(NewHealthValue);
+			
+			// Calculate the actual damage applied that respects the min and max values.
+			const float ActualDamageNumber = OldHealth - NewHealthValue;
+			if (UAbilitySystemComponent* OwningAbilitySystemComponent = GetValid(GetOwningAbilitySystemComponent()))
+			{
+				// Broadcast the damage number gameplay cue on the owning actor. Triggered on server, executes on all clients.
+				const FGameplayTag DamageCueTag = FGameplayTag::RequestGameplayTag("GameplayCue.DamageNumber", true);
+				FGameplayCueParameters DamageCueParameters;
+				DamageCueParameters.NormalizedMagnitude = 1.0f;
+				DamageCueParameters.RawMagnitude = ActualDamageNumber;
+				OwningAbilitySystemComponent->ExecuteGameplayCue(DamageCueTag, DamageCueParameters);
+			}
 		}
 
 		// Clear the meta attribute
