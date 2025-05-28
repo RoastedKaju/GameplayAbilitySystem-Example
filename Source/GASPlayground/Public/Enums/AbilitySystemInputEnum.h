@@ -15,3 +15,11 @@ enum class EAbilitySlotsEnum : uint8
 	SecondaryAbility,
 	UltimateAbility
 };
+
+UENUM(BlueprintType)
+enum class EAbilityInput : uint8
+{
+	Primary,
+	Secondary,
+	Ultimate
+};
