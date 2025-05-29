@@ -21,6 +21,11 @@ void UIntermediateHealthAttributeSet::PostAttributeChange(const FGameplayAttribu
 	float NewValue)
 {
 	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+	if (Attribute == GetHealthAttribute())
+	{
+		OnHealthChanged.Broadcast(this, OldValue, NewValue);
+	}
 }
 
 void UIntermediateHealthAttributeSet::PostGameplayEffectExecute(const struct FGameplayEffectModCallbackData& Data)

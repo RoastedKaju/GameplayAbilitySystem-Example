@@ -13,6 +13,8 @@ GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FIntermediateOnAttributeChanged, UAttributeSet*, AttributeSet, float, OldValue, float, NewValue);
+
 /**
  * @brief Attribute set related to health and damage, it is better to divide attribute sets based on common data
  */
@@ -65,6 +67,9 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldValue);
+
+	UPROPERTY(BlueprintAssignable)
+	FIntermediateOnAttributeChanged OnHealthChanged;
 
 protected:
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
