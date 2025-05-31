@@ -57,6 +57,14 @@ public:
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UIntermediateHealthAttributeSet, MaxHealth);
 
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_Energy, Category = "Attributes")
+	FGameplayAttributeData Energy;
+	ATTRIBUTE_ACCESSORS(UIntermediateHealthAttributeSet, Energy);
+	
+	UPROPERTY(BlueprintReadOnly, ReplicatedUsing=OnRep_MaxEnergy, Category = "Attributes")
+	FGameplayAttributeData MaxEnergy;
+	ATTRIBUTE_ACCESSORS(UIntermediateHealthAttributeSet, MaxEnergy);
+	
 	/// Meta attribute that is only set before applying damage and then reset in post gameplay effect.
 	UPROPERTY(VisibleAnywhere)
 	FGameplayAttributeData Damage;
@@ -67,6 +75,12 @@ public:
 
 	UFUNCTION()
 	void OnRep_MaxHealth(const FGameplayAttributeData& OldValue);
+
+	UFUNCTION()
+	void OnRep_Energy(const FGameplayAttributeData& OldValue);
+	
+	UFUNCTION()
+	void OnRep_MaxEnergy(const FGameplayAttributeData& OldValue);
 
 	UPROPERTY(BlueprintAssignable)
 	FIntermediateOnAttributeChanged OnHealthChanged;
