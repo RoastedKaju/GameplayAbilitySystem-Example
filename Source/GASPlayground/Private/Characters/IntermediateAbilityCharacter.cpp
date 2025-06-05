@@ -66,6 +66,7 @@ void AIntermediateAbilityCharacter::SetupPlayerInputComponent(UInputComponent* P
 
 		EnhancedInputComponent->BindAction(PrimaryAction, ETriggerEvent::Triggered, this, &AIntermediateAbilityCharacter::OnPrimaryInput);
 		EnhancedInputComponent->BindAction(SecondaryAction, ETriggerEvent::Triggered, this, &AIntermediateAbilityCharacter::OnSecondaryInput);
+		EnhancedInputComponent->BindAction(UltimateAction, ETriggerEvent::Triggered, this, &AIntermediateAbilityCharacter::OnUltimateInput);
 	}
 
 }
@@ -101,6 +102,11 @@ void AIntermediateAbilityCharacter::OnPrimaryInput(const FInputActionValue& Valu
 void AIntermediateAbilityCharacter::OnSecondaryInput(const FInputActionValue& Value)
 {
 	SendAbilityLocalInput(Value, static_cast<int32>(EAbilityInput::Secondary));
+}
+
+void AIntermediateAbilityCharacter::OnUltimateInput(const FInputActionValue& Value)
+{
+	SendAbilityLocalInput(Value, static_cast<int32>(EAbilityInput::Ultimate));
 }
 
 void AIntermediateAbilityCharacter::SendAbilityLocalInput(const FInputActionValue& Value, int InputID)

@@ -49,6 +49,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
 	TObjectPtr<UInputAction> SecondaryAction;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Input")
+	TObjectPtr<UInputAction> UltimateAction;
 	
 public:	
 	// Called every frame
@@ -75,6 +78,9 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="Input")
 	void OnSecondaryInput(const FInputActionValue& Value);
+
+	UFUNCTION(BlueprintCallable, Category="Input")
+	void OnUltimateInput(const FInputActionValue& Value);
 
 	/**
 	 * @brief Sends the input ID of action based on the pressed and released boolean state of input.
